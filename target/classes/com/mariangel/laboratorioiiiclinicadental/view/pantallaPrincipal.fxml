@@ -31,12 +31,11 @@
                                 <DatePicker fx:id="datePickerFecNacPaciente" layoutX="232.0" layoutY="252.0" />
                                 <TextField fx:id="txtPrimerApellidoPaciente" layoutX="233.0" layoutY="163.0" prefHeight="25.0" prefWidth="174.0" />
                                 <TextField fx:id="txtNombrePaciente" layoutX="233.0" layoutY="109.0" prefHeight="25.0" prefWidth="174.0" />
-                                <TextField fx:id="txtCedulaPaciente" layoutX="233.0" layoutY="60.0" prefHeight="25.0" prefWidth="174.0" />
-                                <Button fx:id="btnBuscarPaciente" layoutX="445.0" layoutY="60.0" mnemonicParsing="false" onAction="#btnBuscarPaciente" text="BUSCAR" />
+                                <TextField fx:id="txtCedulaPaciente" layoutX="233.0" layoutY="60.0" prefHeight="25.0" prefWidth="174.0" promptText="Digite la cédula" />
+                                <Button fx:id="btnBuscarPaciente" layoutX="445.0" layoutY="60.0" mnemonicParsing="false" onAction="#onActionBuscarPaciente" text="BUSCAR" />
                                 <Button fx:id="btnGuardarPaciente" layoutX="619.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAnctionGuardarPaciente" text="GUARDAR" AnchorPane.bottomAnchor="253.60000000000002" />
                                 <Button fx:id="btnEliminarPaciente" layoutX="621.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionEliminarPaciente" text="ELIMINAR" AnchorPane.bottomAnchor="213.60000000000002" />
                         <Button fx:id="btnCancelar" layoutX="618.0" layoutY="444.0" mnemonicParsing="false" text="CANCELAR" />
-                        <TextField fx:id="txtBuscarCedula" layoutX="445.0" layoutY="109.0" promptText="Digite la cédula" />
                         <Button fx:id="btnModificarPaciente" layoutX="618.0" layoutY="316.0" mnemonicParsing="false" onAction="#onActionBtnModificar" text="MODIFICAR" />
                             </children>
                         </AnchorPane>

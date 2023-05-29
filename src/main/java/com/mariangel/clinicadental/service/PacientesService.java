@@ -56,10 +56,12 @@ public class PacientesService {
 
     public Respuesta getPaciente(Long ced) {
         try {
-            Query qryTours = em.createNamedQuery("Pacientes.findByPkPacCedula", Pacientes.class);
-            qryTours.setParameter("pkPacCedula", ced);
+            System.out.println(ced);
+            System.out.println("ENTRA EN EL GET PACIENTE");
+            Query qryPacientes = em.createNamedQuery("Pacientes.findByPkPacCedula", Pacientes.class);
+            qryPacientes.setParameter("pkPacCedula", ced);
 
-            return new Respuesta(true, "", "", "Pacientes", new PacientesDto((Pacientes) qryTours.getSingleResult()));
+            return new Respuesta(true, "", "", "Pacientes", new PacientesDto((Pacientes) qryPacientes.getSingleResult()));
 
         } catch (NoResultException ex) {
             return new Respuesta(false, "No existe el paciente ingresado.", "getTour NoResultException");
@@ -71,7 +73,7 @@ public class PacientesService {
             return new Respuesta(false, "Ocurrio un error al consultar el paciente.", "getPacientes " + ex.getMessage());
         }
     }
-    public Respuesta modificarCliente(PacientesDto pacienteDto, Long id) {
+    public Respuesta modificarPaciente(PacientesDto pacienteDto, Long id) {
         try {
             et = em.getTransaction();
             et.begin();
@@ -104,13 +106,13 @@ public class PacientesService {
     
 
 
-    public Respuesta eliminarPaciente(Long id) {
+    public Respuesta eliminarPaciente(Long ced) {
         try {
             et = em.getTransaction();
             et.begin();
             Pacientes pacientes;
-            if (id != null && id > 0) {
-                pacientes = em.find(Pacientes.class, id);
+            if (ced != null && ced > 0) {
+                pacientes = em.find(Pacientes.class, ced);
                 if (pacientes == null) {
                     et.rollback();
                     return new Respuesta(false, "No se encrontró el paciente a eliminar.", "eliminarPaciente NoResultException");
@@ -128,16 +130,11 @@ public class PacientesService {
                 return new Respuesta(false, "No se puede eliminar el paciente porque tiene relaciones con otros registros.", "eliminarPaciente " + ex.getMessage());
             }
             Logger.getLogger(PacientesService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el paciente.", ex);
-            return new Respuesta(false, "Ocurrio un error al eliminar el paciente.", "eliminarPaciente " + ex.getMessage());
+            return new Respuesta(false, "Ocurrió un error al eliminar el paciente.", "eliminarPaciente " + ex.getMessage());
         }
 
     }
 
 }
 
-
-
-
-
-//    }
 

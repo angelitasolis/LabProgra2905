@@ -137,8 +137,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     PacientesDto paciente;
     List<Node> requeridos = new ArrayList<>();
     @FXML
-    private TextField txtBuscarCedula;
-    @FXML
     private Button btnModificarPaciente;
     @FXML
     private TableView<?> tblvInformacionPacientes;
@@ -160,7 +158,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     public void indicarRequeridos() {
         requeridos.clear();
-        requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita));
+        requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
     }
 
     private void bindPaciente(Boolean nuevo) {
@@ -197,22 +195,18 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtCedulaPaciente.requestFocus();
     }
 
-    @FXML
-    void btnBuscarPaciente(ActionEvent event) {
-        String cedulaText = txtBuscarCedula.getText();
-        long cedula = Long.parseLong(cedulaText);
-        cargarCliente(cedula);
 
-    }
-
-    private void cargarCliente(Long pcedula) {
+    private void cargarPaciente(Long pcedula) {
         PacientesService service = new PacientesService();
         Respuesta respuesta = service.getPaciente(pcedula);
-
+        System.out.println("Paciente antes del unbind" +pcedula);
         if (respuesta.getEstado()) {
             unbindPaciente();
+            System.out.println("despues del unbind" );
             paciente = (PacientesDto) respuesta.getResultado("Pacientes");
+            
             bindPaciente(false);
+            System.out.println("Paciente despues del bind" +pcedula);
             validarRequeridos();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
@@ -261,19 +255,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         }
     }
 
-//    private void cargarEmpleado(Long id) {
-//   //     PacientesService service = new PacientesService();
-//        Respuesta respuesta = service.getPaciente(id);
-//
-//        if (respuesta.getEstado()) {
-//            unbindPaciente();
-//            paciente = (PacientesDto) respuesta.getResultado("Paciente");
-//            bindPaciente(false);
-//            validarRequeridos();
-//        } else {
-//            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
-//        }
-//    }
     @Override
     public void initialize() {
 
@@ -316,7 +297,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
         try {
             unbindPaciente();
-            String cedulaText = txtBuscarCedula.getText();
+            String cedulaText = txtCedulaPaciente.getText();
             long cedula = Long.parseLong(cedulaText);
             PacientesDto pacientesDto = new PacientesDto();
             pacientesDto.setCedula(Long.parseLong(txtCedulaPaciente.getText()));
@@ -327,18 +308,45 @@ public class PantallaPrincipalViewController extends Controller implements Initi
             pacientesDto.setPacFecnac(datePickerFecNacPaciente.getValue());
 
             PacientesService pacientesService = new PacientesService();
-            Respuesta respuesta = pacientesService.modificarCliente(pacientesDto, cedula);
+            Respuesta respuesta = pacientesService.modificarPaciente(pacientesDto, cedula);
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Actualizar paciente", getStage(), "Paciente actualizado correctamente.");
             
         } catch (Exception ex) {
-            Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error actualizando el cliente.", ex);
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Actualizar cliente", getStage(), "Ocurrio un error al actualizar el cliente.");
+            Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error actualizando el Paciente.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Actualizar Paciente", getStage(), "Ocurrio un error al actualizar el Paciente.");
         }
 
     }
 
     @FXML
     private void onActionEliminarPaciente(ActionEvent event) {
+        try {
+            if (paciente.getPacCedula() == null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Paciente", getStage(), "Debe cargar el tipo de Paciente que desea eliminar.");
+            } else {
+
+                PacientesService service = new PacientesService();
+                Respuesta respuesta = service.eliminarPaciente(paciente.getPacCedula());
+                if (!respuesta.getEstado()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Paciente", getStage(), respuesta.getMensaje());
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Paciente", getStage(), "Paciente eliminado correctamente.");
+                    nuevoPaciente();
+                    
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error eliminando el Paciente.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Paciente", getStage(), "Ocurrio un error eliminando el Paciente.");
+        }
     }
+
+    @FXML
+    private void onActionBuscarPaciente(ActionEvent event) {
+        String cedulaText = txtCedulaPaciente.getText();
+        Long cedula = Long.parseLong(cedulaText);
+        cargarPaciente(cedula);
+    }
+    
 
 }
