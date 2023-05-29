@@ -35,7 +35,7 @@
                                 <Button fx:id="btnBuscarPaciente" layoutX="445.0" layoutY="60.0" mnemonicParsing="false" onAction="#onActionBuscarPaciente" text="BUSCAR" />
                                 <Button fx:id="btnGuardarPaciente" layoutX="619.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAnctionGuardarPaciente" text="GUARDAR" AnchorPane.bottomAnchor="253.60000000000002" />
                                 <Button fx:id="btnEliminarPaciente" layoutX="621.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionEliminarPaciente" text="ELIMINAR" AnchorPane.bottomAnchor="213.60000000000002" />
-                        <Button fx:id="btnCancelar" layoutX="618.0" layoutY="444.0" mnemonicParsing="false" text="CANCELAR" />
+                        <Button fx:id="btnCancelar" layoutX="618.0" layoutY="444.0" mnemonicParsing="false" onAction="#onActionBtnCancelar" text="CANCELAR" />
                         <Button fx:id="btnModificarPaciente" layoutX="618.0" layoutY="316.0" mnemonicParsing="false" onAction="#onActionBtnModificar" text="MODIFICAR" />
                             </children>
                         </AnchorPane>

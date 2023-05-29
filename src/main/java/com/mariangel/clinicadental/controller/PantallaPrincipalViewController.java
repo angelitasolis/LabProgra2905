@@ -347,6 +347,17 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         Long cedula = Long.parseLong(cedulaText);
         cargarPaciente(cedula);
     }
+
+    @FXML
+    private void onActionBtnCancelar(ActionEvent event) {
+        txtCedulaPaciente.clear();
+        txtCedulaRegistrarCita.clear();
+        txtDireccionPaciente.clear();
+        txtNombrePaciente.clear();
+        txtPrimerApellidoPaciente.clear();
+        txtSegundoApellidoPaciente.clear();
+        datePickerFecNacPaciente.setValue(null);
+    }
     
 
 }
