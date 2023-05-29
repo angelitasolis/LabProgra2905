@@ -6,6 +6,9 @@ package com.mariangel.clinicadental.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 
 /**
  *
@@ -29,6 +32,8 @@ public class Citas implements Serializable {
     @javax.persistence.Id
     @javax.persistence.Basic(optional = false)
     @javax.persistence.Column(name = "CITA_ID")
+    @SequenceGenerator(name = "SEC_CITAS", sequenceName = "SEC_CITAS", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_CITAS")
     private Integer citaId;
     @javax.persistence.JoinColumn(name = "CITA_CEDUPAC", referencedColumnName = "PK_PAC_CEDULA")
     @javax.persistence.ManyToOne(optional = false)
@@ -97,5 +102,5 @@ public class Citas implements Serializable {
     public String toString() {
         return "com.mariangel.clinicadental.model.Citas[ citaId=" + citaId + " ]";
     }
-    
+
 }
