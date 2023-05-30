@@ -5,6 +5,7 @@
 package com.mariangel.clinicadental.model;
 
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,7 +35,7 @@ public class Citas implements Serializable {
     @javax.persistence.Column(name = "CITA_ID")
     @SequenceGenerator(name = "SEC_CITAS", sequenceName = "SEC_CITAS", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEC_CITAS")
-    private Integer citaId;
+    private Long citaId;
     @javax.persistence.JoinColumn(name = "CITA_CEDUPAC", referencedColumnName = "PK_PAC_CEDULA")
     @javax.persistence.ManyToOne(optional = false)
     private Pacientes citaCedupac;
@@ -42,7 +43,7 @@ public class Citas implements Serializable {
     public Citas() {
     }
 
-    public Citas(Integer citaId) {
+    public Citas(Long citaId) {
         this.citaId = citaId;
     }
 
@@ -62,11 +63,11 @@ public class Citas implements Serializable {
         this.citaHora = citaHora;
     }
 
-    public Integer getCitaId() {
+    public Long getCitaId() {
         return citaId;
     }
 
-    public void setCitaId(Integer citaId) {
+    public void setCitaId(Long citaId) {
         this.citaId = citaId;
     }
 
@@ -78,15 +79,27 @@ public class Citas implements Serializable {
         this.citaCedupac = citaCedupac;
     }
 
-    @Override
-    public int hashCode() {
+    public void actualizar(CitasDto citasDto) {
+        this.citaHora = citasDto.getcitaHora();
+        this.citaDia = Date.from(citasDto.getCitaDia().atStartOfDay(ZoneId.systemDefault()).toInstant());;
+        this.citaId = citasDto.getCitaId();
+        this.citaCedupac = new Pacientes (citasDto.getCitaCedupac());}
+        
+    public Citas(CitasDto citaDto) {
+        this.citaId = citaDto.getCitaId();
+        actualizar(citaDto);
+    }
+
+
+@Override
+public int hashCode() {
         int hash = 0;
         hash += (citaId != null ? citaId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Citas)) {
             return false;
@@ -99,7 +112,7 @@ public class Citas implements Serializable {
     }
 
     @Override
-    public String toString() {
+public String toString() {
         return "com.mariangel.clinicadental.model.Citas[ citaId=" + citaId + " ]";
     }
 

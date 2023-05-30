@@ -4,22 +4,22 @@
 // */
 //package com.mariangel.clinicadental.service;
 //
-////import com.mariangel.clinicadental.model.Citas;
-////import com.mariangel.clinicadental.model.CitasDto;
-////import com.mariangel.clinicadental.util.EntityManagerHelper;
-////import com.mariangel.clinicadental.util.Respuesta;
-////import java.sql.SQLIntegrityConstraintViolationException;
-////import java.util.logging.Level;
-////import java.util.logging.Logger;
-////import javax.persistence.EntityManager;
-////import javax.persistence.EntityTransaction;
-////import javax.persistence.NoResultException;
-////import javax.persistence.NonUniqueResultException;
-////import javax.persistence.Query;
+//import com.mariangel.clinicadental.model.Citas;
+//import com.mariangel.clinicadental.model.CitasDto;
+//import com.mariangel.clinicadental.util.EntityManagerHelper;
+//import com.mariangel.clinicadental.util.Respuesta;
+//import java.sql.SQLIntegrityConstraintViolationException;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import javax.persistence.EntityManager;
+//import javax.persistence.EntityTransaction;
+//import javax.persistence.NoResultException;
+//import javax.persistence.NonUniqueResultException;
+//import javax.persistence.Query;
 //
 ///**
 // *
-// * @author Administrador
+// * @author Mari
 // */
 //public class CitasService {
 //
