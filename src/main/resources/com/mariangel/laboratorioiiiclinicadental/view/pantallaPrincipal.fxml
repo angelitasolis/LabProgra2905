@@ -66,7 +66,7 @@
                                 <Label fx:id="txtSegundoApellidoRegistrarCita" layoutX="297.0" layoutY="210.0" />
                                 <Label layoutX="136.0" layoutY="300.0" text="REGISTRAR CITA" AnchorPane.topAnchor="300.0" />
                                 <Button fx:id="btnRegistrar" layoutX="260.0" layoutY="476.0" mnemonicParsing="false" onAction="#onActionRegistrarCita" text="REGISTRAR" />
-                                <TableView layoutX="573.0" layoutY="190.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="214.00000000000006" AnchorPane.leftAnchor="573.0" AnchorPane.rightAnchor="69.0">
+                                <TableView fx:id="tblvRegistrarCita" layoutX="573.0" layoutY="190.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="214.00000000000006" AnchorPane.leftAnchor="573.0" AnchorPane.rightAnchor="69.0">
                                     <columns>
                                         <TableColumn fx:id="tblvHoraRegistrarCita" prefWidth="141.60000610351562" text="Hora" />
                                         <TableColumn fx:id="tblvFechaRegistrarCita" minWidth="0.0" prefWidth="175.19998168945312" text="Fecha" />

@@ -13,6 +13,7 @@ import com.mariangel.clinicadental.util.Mensaje;
 import com.mariangel.clinicadental.util.Respuesta;
 import java.awt.Desktop.Action;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,13 +83,13 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private TableColumn<PacientesDto, String> tblvCedulaInfoPacientes;
 
     @FXML
-    private TableColumn<PacientesDto, ?> tblvDireccionInfoPacientes;
+    private TableColumn<PacientesDto, String> tblvDireccionInfoPacientes;
 
     @FXML
-    private TableColumn<?, ?> tblvEdadInfoPacientes;
+    private TableColumn<PacientesDto, Long> tblvEdadInfoPacientes;
 
     @FXML
-    private TableColumn<?, ?> tblvFechaInfoPacientes;
+    private TableColumn<PacientesDto, String> tblvFechaInfoPacientes;
 
     @FXML
     private TableColumn<?, ?> tblvFechaRegistrarCita;
@@ -104,7 +105,10 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @FXML
     private TableColumn<?, ?> tblvSegundoApellidoInfoPacientes;
-
+    @FXML
+    private TableView<?> tblvInformacionPacientes;
+    @FXML
+    private TableView<?> tblvRegistrarCita;
     @FXML
     private TextField txtCedulaPaciente;
 
@@ -143,12 +147,15 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     List<Node> requeridos = new ArrayList<>();
     @FXML
     private Button btnModificarPaciente;
-    @FXML
-    private TableView<?> tblvInformacionPacientes;
+
     @FXML
     private Button btnCancelarRegistrarCita;
     @FXML
     private Label labelAdministracionClinicaDental;
+    
+    
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
