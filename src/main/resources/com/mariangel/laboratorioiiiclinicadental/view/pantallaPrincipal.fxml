@@ -9,12 +9,18 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mariangel.clinicadental.controller.PantallaPrincipalViewController"> 
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="950.0" stylesheets="@pantallaPrincipal.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mariangel.clinicadental.controller.PantallaPrincipalViewController"> 
     <children>
-        <TabPane layoutY="32.0" prefHeight="668.0" prefWidth="950.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
+      <ImageView fitHeight="700.0" fitWidth="950.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Imagenes/fondo1.jpg" />
+         </image></ImageView>
+        <TabPane layoutY="60.0" prefHeight="640.0" prefWidth="950.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
             <tabs>
                 <Tab fx:id="tapPanePaciente" onSelectionChanged="#onSelectionTapRegistrarPacientes" text="PACIENTE">
                     <content>
@@ -23,20 +29,20 @@
                                 <Label layoutX="139.0" layoutY="64.0" text="CÉDULA" AnchorPane.leftAnchor="139.0" AnchorPane.topAnchor="64.0" />
                                 <Label layoutX="136.0" layoutY="113.0" text="NOMBRE" AnchorPane.leftAnchor="136.0" AnchorPane.topAnchor="113.0" />
                                 <Label layoutX="90.0" layoutY="167.0" text="PRIMER APELLIDO" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="167.0" />
-                                <Label layoutX="80.0" layoutY="210.0" text="SEGUNDO APELLIDO" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="210.0" />
-                                <Label layoutX="59.0" layoutY="256.0" text="FECHA DE NACIMIENTO" AnchorPane.leftAnchor="59.0" AnchorPane.topAnchor="256.0" />
-                                <Label layoutX="123.0" layoutY="311.0" text="DIRECCIÓN" AnchorPane.leftAnchor="123.0" AnchorPane.topAnchor="311.0" />
-                                <TextArea fx:id="txtDireccionPaciente" layoutX="233.0" layoutY="310.0" prefHeight="179.0" prefWidth="365.0" AnchorPane.bottomAnchor="150.00000000000006" AnchorPane.leftAnchor="233.0" />
-                                <TextField fx:id="txtSegundoApellidoPaciente" layoutX="232.0" layoutY="206.0" prefHeight="25.0" prefWidth="174.0" />
-                                <DatePicker fx:id="datePickerFecNacPaciente" layoutX="232.0" layoutY="252.0" />
-                                <TextField fx:id="txtPrimerApellidoPaciente" layoutX="233.0" layoutY="163.0" prefHeight="25.0" prefWidth="174.0" />
-                                <TextField fx:id="txtNombrePaciente" layoutX="233.0" layoutY="109.0" prefHeight="25.0" prefWidth="174.0" />
+                                <Label layoutX="82.0" layoutY="233.0" text="SEGUNDO APELLIDO" AnchorPane.leftAnchor="82.0" AnchorPane.topAnchor="233.0" />
+                                <Label layoutX="57.0" layoutY="296.0" text="FECHA DE NACIMIENTO" AnchorPane.leftAnchor="57.0" AnchorPane.topAnchor="296.0" />
+                                <Label layoutX="136.0" layoutY="376.0" text="DIRECCIÓN" AnchorPane.leftAnchor="136.0" AnchorPane.topAnchor="376.0" />
+                                <TextArea fx:id="txtDireccionPaciente" layoutX="233.0" layoutY="364.0" prefHeight="179.0" prefWidth="365.0" promptText="Escriba la  dirección del paciente" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="233.0" />
+                                <TextField fx:id="txtSegundoApellidoPaciente" layoutX="233.0" layoutY="226.0" prefHeight="25.0" prefWidth="174.0" promptText="Digite segundo apellido" />
+                                <DatePicker fx:id="datePickerFecNacPaciente" layoutX="232.0" layoutY="288.0" promptText="Seleccione la fecha" />
+                                <TextField fx:id="txtPrimerApellidoPaciente" layoutX="233.0" layoutY="163.0" prefHeight="25.0" prefWidth="174.0" promptText="Digite  primer apellido" />
+                                <TextField fx:id="txtNombrePaciente" layoutX="233.0" layoutY="109.0" prefHeight="25.0" prefWidth="174.0" promptText="Digite el nombre" />
                                 <TextField fx:id="txtCedulaPaciente" layoutX="233.0" layoutY="60.0" prefHeight="25.0" prefWidth="174.0" promptText="Digite la cédula" />
-                                <Button fx:id="btnBuscarPaciente" layoutX="445.0" layoutY="60.0" mnemonicParsing="false" onAction="#onActionBuscarPaciente" text="BUSCAR" />
-                                <Button fx:id="btnGuardarPaciente" layoutX="619.0" layoutY="360.0" mnemonicParsing="false" onAction="#onAnctionGuardarPaciente" text="GUARDAR" AnchorPane.bottomAnchor="253.60000000000002" />
-                                <Button fx:id="btnEliminarPaciente" layoutX="621.0" layoutY="400.0" mnemonicParsing="false" onAction="#onActionEliminarPaciente" text="ELIMINAR" AnchorPane.bottomAnchor="213.60000000000002" />
-                        <Button fx:id="btnCancelar" layoutX="618.0" layoutY="444.0" mnemonicParsing="false" onAction="#onActionBtnCancelar" text="CANCELAR" />
-                        <Button fx:id="btnModificarPaciente" layoutX="618.0" layoutY="316.0" mnemonicParsing="false" onAction="#onActionBtnModificar" text="MODIFICAR" />
+                                <Button fx:id="btnBuscarPaciente" layoutX="437.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionBuscarPaciente" text="BUSCAR" />
+                                <Button fx:id="btnGuardarPaciente" layoutX="623.0" layoutY="419.0" mnemonicParsing="false" onAction="#onAnctionGuardarPaciente" text="GUARDAR" AnchorPane.bottomAnchor="157.8" />
+                                <Button fx:id="btnEliminarPaciente" layoutX="624.0" layoutY="510.0" mnemonicParsing="false" onAction="#onActionEliminarPaciente" text="ELIMINAR" AnchorPane.bottomAnchor="88.40000000000009" />
+                        <Button fx:id="btnCancelar" layoutX="554.0" layoutY="59.0" mnemonicParsing="false" onAction="#onActionBtnCancelar" text="CANCELAR" />
+                        <Button fx:id="btnModificarPaciente" layoutX="618.0" layoutY="364.0" mnemonicParsing="false" onAction="#onActionBtnModificar" text="MODIFICAR" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -49,25 +55,25 @@
                                 <Label layoutX="50.0" layoutY="113.0" text="NOMBRE" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="113.0" />
                                 <Label layoutX="48.0" layoutY="162.0" text="PRIMER APELLIDO" AnchorPane.leftAnchor="48.0" AnchorPane.topAnchor="162.0" />
                                 <Label layoutX="78.0" layoutY="288.0" text="SEGUNDO APELLIDO" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />
-                                <TextField fx:id="txtCedulaRegistrarCita" layoutX="146.0" layoutY="32.0" prefHeight="25.0" prefWidth="174.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="704.0" />
-                                <Button fx:id="btnBuscarRegistrarCita" layoutX="285.0" layoutY="32.0" mnemonicParsing="false" onAction="#onActionBuscarCitas" text="BUSCAR" AnchorPane.leftAnchor="285.0" AnchorPane.topAnchor="32.0" />
-                                <Label layoutX="607.0" layoutY="113.0" text="FECHA" AnchorPane.leftAnchor="607.0" AnchorPane.topAnchor="113.0" />
-                                <DatePicker fx:id="datePickerFechaRegistrarCita" layoutX="690.0" layoutY="109.0" AnchorPane.rightAnchor="85.19999999999993" />
-                                <Label layoutX="609.0" layoutY="162.0" text="HORA" AnchorPane.leftAnchor="609.0" AnchorPane.topAnchor="162.0" />
-                                <TextField fx:id="txtHoraRegistrarCita" layoutX="691.0" layoutY="158.0" prefHeight="25.0" prefWidth="174.0" AnchorPane.rightAnchor="85.0" />
-                                <Label fx:id="txtNombreRegistrarCita" layoutX="297.0" layoutY="113.0" text="NOMBRE" />
-                                <Label fx:id="txtPrimerApellidoRegistrarCita" layoutX="296.0" layoutY="162.0" text="PRIMER APELLIDO" />
-                                <Label fx:id="txtSegundoApellidoRegistrarCita" layoutX="297.0" layoutY="210.0" text="SEGUNDO APELLIDO" />
-                                <Label layoutX="717.0" layoutY="36.0" text="REGISTRAR CITA" AnchorPane.topAnchor="36.0" />
-                                <Button fx:id="btnRegistrar" layoutX="747.0" layoutY="215.0" mnemonicParsing="false" onAction="#onActionRegistrarCita" text="REGISTRAR" />
-                                <TableView layoutX="53.0" layoutY="271.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="133.00000000000006" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="589.0">
+                                <TextField fx:id="txtCedulaRegistrarCita" layoutX="118.0" layoutY="32.0" prefHeight="30.0" prefWidth="183.0" promptText="Escriba una cédula" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="649.0" />
+                                <Button fx:id="btnBuscarRegistrarCita" layoutX="334.0" layoutY="27.0" mnemonicParsing="false" onAction="#onActionBuscarCitas" text="BUSCAR" AnchorPane.leftAnchor="334.0" AnchorPane.topAnchor="27.0" />
+                                <Label layoutX="53.0" layoutY="357.0" text="FECHA" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="357.0" />
+                                <DatePicker fx:id="datePickerFechaRegistrarCita" layoutX="146.0" layoutY="349.0" AnchorPane.rightAnchor="629.2" />
+                                <Label layoutX="56.0" layoutY="425.0" text="HORA" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="425.0" />
+                                <TextField fx:id="txtHoraRegistrarCita" layoutX="146.0" layoutY="418.0" prefHeight="25.0" prefWidth="174.0" promptText="Hora de la cita" AnchorPane.rightAnchor="630.0" />
+                                <Label fx:id="txtNombreRegistrarCita" layoutX="297.0" layoutY="113.0" />
+                                <Label fx:id="txtPrimerApellidoRegistrarCita" layoutX="296.0" layoutY="162.0" />
+                                <Label fx:id="txtSegundoApellidoRegistrarCita" layoutX="297.0" layoutY="210.0" />
+                                <Label layoutX="136.0" layoutY="300.0" text="REGISTRAR CITA" AnchorPane.topAnchor="300.0" />
+                                <Button fx:id="btnRegistrar" layoutX="260.0" layoutY="476.0" mnemonicParsing="false" onAction="#onActionRegistrarCita" text="REGISTRAR" />
+                                <TableView layoutX="573.0" layoutY="190.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="214.00000000000006" AnchorPane.leftAnchor="573.0" AnchorPane.rightAnchor="69.0">
                                     <columns>
-                                        <TableColumn fx:id="tblvHoraRegistrarCita" prefWidth="145.59997177124023" text="Hora" />
-                                        <TableColumn fx:id="tblvFechaRegistrarCita" minWidth="0.0" prefWidth="170.40000915527344" text="Fecha" />
+                                        <TableColumn fx:id="tblvHoraRegistrarCita" prefWidth="141.60000610351562" text="Hora" />
+                                        <TableColumn fx:id="tblvFechaRegistrarCita" minWidth="0.0" prefWidth="175.19998168945312" text="Fecha" />
                               <TableColumn prefWidth="64.0" text="HORA" />
                                     </columns>
                                 </TableView>
-                        <Button fx:id="btnCancelarRegistrarCita" layoutX="748.0" layoutY="258.0" mnemonicParsing="false" onAction="#onActionCancelarRegistrarCita" text="CANCELAR" />
+                        <Button fx:id="btnCancelarRegistrarCita" layoutX="102.0" layoutY="476.0" mnemonicParsing="false" onAction="#onActionCancelarRegistrarCita" text="CANCELAR" />
                             </children>
                         </AnchorPane>
                     </content>
@@ -76,7 +82,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="521.0" prefWidth="1013.0">
                             <children>
-                                <TableView fx:id="tblvInformacionPacientes" layoutX="-1.0" layoutY="1.0" prefHeight="521.0" prefWidth="917.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                                <TableView fx:id="tblvInformacionPacientes" layoutX="-1.0" layoutY="1.0" prefHeight="634.0" prefWidth="1109.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-158.0" AnchorPane.topAnchor="1.0">
                                     <columns>
                                         <TableColumn fx:id="tblvCedulaInfoPacientes" prefWidth="88.0" text="CÉDULA" />
                                         <TableColumn fx:id="tblvNombreInfoPacientes" prefWidth="97.0" text="NOMBRE" />
@@ -94,9 +100,9 @@
                 </Tab>
             </tabs>
         </TabPane>
-        <Label layoutX="358.0" prefHeight="38.0" prefWidth="234.0" text="Administración Clínica Dental" AnchorPane.topAnchor="0.0">
+        <Label fx:id="labelAdministracionClinicaDental" layoutX="421.0" layoutY="14.0" prefHeight="38.0" prefWidth="234.0" text="Administración Clínica Dental" AnchorPane.topAnchor="14.0">
             <font>
-                <Font size="18.0" />
+                <Font name="Bodoni MT" size="35.0" />
             </font>
         </Label>
     </children>

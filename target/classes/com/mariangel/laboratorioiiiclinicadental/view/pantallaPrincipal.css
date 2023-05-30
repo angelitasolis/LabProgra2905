@@ -1,0 +1,74 @@
+.root {
+    -fx-background-color:  #a8a8a8;
+}
+
+.label {
+    -fx-font-family: "Arial";
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-color: #0077B5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #005782;
+}
+
+.button:pressed {
+    -fx-background-color: #003D52;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #0077B5;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.text-area {
+    -fx-background-color: white;
+    -fx-border-color: #0077B5;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.date-picker {
+    -fx-background-color: white;
+    -fx-border-color: #0077B5;
+    -fx-border-radius: 5px;
+}
+
+.tab-pane {
+    -fx-background-color: #f2f2f2;
+}
+
+.tab {
+    -fx-background-color: #0077B5;
+    -fx-text-fill: white;
+}
+
+.tab:selected {
+    -fx-background-color: #005782;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: #0077B5;
+}
+
+.table-column {
+    -fx-background-color: #0077B5;
+    -fx-text-fill: white;
+}
+
+#labelAdministracionClinicaDental{
+    
+}

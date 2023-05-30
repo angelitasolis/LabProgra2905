@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -34,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -144,6 +147,8 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private TableView<?> tblvInformacionPacientes;
     @FXML
     private Button btnCancelarRegistrarCita;
+    @FXML
+    private Label labelAdministracionClinicaDental;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -159,6 +164,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         indicarRequeridosCitas();
         indicarRequeridos();
         nuevoPaciente();
+
     }
 
     private void bindPaciente(Boolean nuevo) {
@@ -171,7 +177,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtSegundoApellidoPaciente.textProperty().bindBidirectional(paciente.pacSapellido);
         txtDireccionPaciente.textProperty().bindBidirectional(paciente.pacDirec);
         datePickerFecNacPaciente.valueProperty().bindBidirectional(paciente.pacFecnac);
-       
+
     }
 
     private void unbindPaciente() {
@@ -185,7 +191,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     }
 
     public void indicarRequeridos() {
-            System.out.println(" ENTRO AL indicar requeridos de cargar paciente");
+        System.out.println(" ENTRO AL indicar requeridos de cargar paciente");
         requeridos.clear();
         requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
     }
@@ -202,7 +208,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private void cargarPaciente(Long pcedula) {
         PacientesService service = new PacientesService();
         Respuesta respuesta = service.getPaciente(pcedula);
-        System.out.println("METODO CARGAR Paciente antes del unbind" + pcedula);
         if (respuesta.getEstado()) {
             unbindPaciente();
             System.out.println("despues del unbind");
@@ -223,6 +228,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         String cedulaText = txtCedulaPaciente.getText();
         Long cedula = Long.parseLong(cedulaText);
         cargarPaciente(cedula);
+
     }
 
     @FXML
@@ -245,7 +251,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
                     System.out.println("aqui estoy" + paciente.toString());
                     bindPaciente(false);
 
-                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar paciente", getStage(), "Empresa guardada correctamente.");
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar paciente", getStage(), "Paciente guardo con éxito.");
 
                 }
             }
@@ -458,6 +464,10 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         datePickerFechaRegistrarCita.setValue(null);
         txtHoraRegistrarCita.clear();
         txtCedulaRegistrarCita.clear();
+        txtSegundoApellidoRegistrarCita.setText(null);
+        txtNombreRegistrarCita.setText(null);
+        txtPrimerApellidoRegistrarCita.setText(null);
+
     }
 
     @FXML
@@ -474,13 +484,11 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     @FXML
     private void onSelectionTapRegistrarPacientes(Event event) {
 
-        
     }
 
     @FXML
     private void onSelectionTapRegistrarCita(Event event) {
 
-        
     }
 
     @FXML
