@@ -16,7 +16,7 @@
     <children>
         <TabPane layoutY="32.0" prefHeight="668.0" prefWidth="950.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="32.0">
             <tabs>
-                <Tab fx:id="tapPanePaciente" text="PACIENTE">
+                <Tab fx:id="tapPanePaciente" onSelectionChanged="#onSelectionTapRegistrarPacientes" text="PACIENTE">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -41,7 +41,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="tapPaneRegistarCita" text="REGISTRAR CITA">
+                <Tab fx:id="tapPaneRegistarCita" onSelectionChanged="#onSelectionTapRegistrarCita" text="REGISTRAR CITA">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -59,7 +59,7 @@
                                 <Label fx:id="txtPrimerApellidoRegistrarCita" layoutX="296.0" layoutY="162.0" text="PRIMER APELLIDO" />
                                 <Label fx:id="txtSegundoApellidoRegistrarCita" layoutX="297.0" layoutY="210.0" text="SEGUNDO APELLIDO" />
                                 <Label layoutX="717.0" layoutY="36.0" text="REGISTRAR CITA" AnchorPane.topAnchor="36.0" />
-                                <Button fx:id="btnRegistrar" layoutX="747.0" layoutY="215.0" mnemonicParsing="false" text="REGISTRAR" />
+                                <Button fx:id="btnRegistrar" layoutX="747.0" layoutY="215.0" mnemonicParsing="false" onAction="#onActionRegistrarCita" text="REGISTRAR" />
                                 <TableView layoutX="53.0" layoutY="271.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="133.00000000000006" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="589.0">
                                     <columns>
                                         <TableColumn fx:id="tblvHoraRegistrarCita" prefWidth="145.59997177124023" text="Hora" />
@@ -72,7 +72,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="tapPaneInfoPacientes" text="INFORMACIÓN DE PACIENTES">
+                <Tab fx:id="tapPaneInfoPacientes" onSelectionChanged="#onSelectionTapInformacionPacientes" text="INFORMACIÓN DE PACIENTES">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="521.0" prefWidth="1013.0">
                             <children>

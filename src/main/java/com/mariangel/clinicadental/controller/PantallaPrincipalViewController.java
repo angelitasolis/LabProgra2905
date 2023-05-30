@@ -134,8 +134,9 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     /**
      * Initializes the controller class.
      */
-    CitasDto cita;
     PacientesDto paciente;
+    CitasDto cita;
+    
     List<Node> requeridos = new ArrayList<>();
     @FXML
     private Button btnModificarPaciente;
@@ -149,22 +150,20 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         // TODO
 
         paciente = new PacientesDto();
-        
-       
-           
+        cita = new CitasDto();
+
     }
 
     public void indicarRequeridos() {
         requeridos.clear();
         requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
     }
-    
-    public void indicarRequeridosCitas(){
-    requeridos.clear();
-    requeridos.addAll(Arrays.asList(txtNombreRegistrarCita,txtPrimerApellidoRegistrarCita , txtSegundoApellidoRegistrarCita));
+
+    public void indicarRequeridosCitas() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtNombreRegistrarCita, txtPrimerApellidoRegistrarCita, txtSegundoApellidoRegistrarCita));
     }
-    
-    
+
     private void bindPaciente(Boolean nuevo) {
         if (!nuevo) {
             txtCedulaPaciente.textProperty().bindBidirectional(paciente.pacCedula);
@@ -359,19 +358,18 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @FXML
     private void onActionBuscarCitas(ActionEvent event) {
-        if(!txtCedulaRegistrarCita.getText().isBlank()){ 
-        String cedulaText = txtCedulaRegistrarCita.getText();
-        Long cedula = Long.parseLong(cedulaText);
-        cargarCedulaCita(cedula);
+        if (!txtCedulaRegistrarCita.getText().isBlank()) {
+            String cedulaText = txtCedulaRegistrarCita.getText();
+            Long cedula = Long.parseLong(cedulaText);
+            cargarCedulaCita(cedula);
         }
-    } 
-    
-    
+    }
+
     private void bindCitas(Boolean nuevo) {
-        
-       txtNombreRegistrarCita.textProperty().bindBidirectional(paciente.pacNombre);
-       txtPrimerApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacPapellido);
-       txtSegundoApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacSapellido);
+
+        txtNombreRegistrarCita.textProperty().bindBidirectional(paciente.pacNombre);
+        txtPrimerApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacPapellido);
+        txtSegundoApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacSapellido);
     }
 
     private void unbindCitas() {
@@ -380,16 +378,17 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtSegundoApellidoRegistrarCita.textProperty().unbindBidirectional(paciente.pacSapellido);
 
     }
-    
+
     private void cargarCedulaCita(Long pcedula) {
         PacientesService service = new PacientesService();
         Respuesta respuesta = service.getPaciente(pcedula);
-        
+
         if (respuesta.getEstado()) {
             unbindCitas();
             paciente = (PacientesDto) respuesta.getResultado("Pacientes");
 
             bindCitas(false);
+            cita.setCitaCedupac(paciente);
             validarRequeridos();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
@@ -403,10 +402,11 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtHoraRegistrarCita.clear();
         txtCedulaRegistrarCita.clear();
     }
+//TapPanes
 
     @FXML
     private void onSelectionTapRegistrarPacientes(Event event) {
-        
+
         txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
@@ -418,21 +418,74 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @FXML
     private void onSelectionTapRegistrarCita(Event event) {
-        
-         txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
-         indicarRequeridosCitas();
+
+        txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
+        nuevoCita();
+        indicarRequeridosCitas();
     }
 
     @FXML
     private void onSelectionTapInformacionPacientes(Event event) {
-        
+
     }
     
     
     
+//Registrar Citas
     
+      private void nuevoCita() {
+        unbindCita();
+        cita = new CitasDto();
+        bindCita(true);
+    }
+      
+    private void bindCita(Boolean nuevo) {
+        txtHoraRegistrarCita.textProperty().bindBidirectional(cita.citaHora);
+        datePickerFechaRegistrarCita.valueProperty().bindBidirectional(cita.citaDia);
+    }
+
+    private void unbindCita() {
+
+        txtHoraRegistrarCita.textProperty().unbindBidirectional(cita.citaHora);
+        datePickerFechaRegistrarCita.valueProperty().unbindBidirectional(cita.citaDia);
+    }
+    public void indicarRequeridosRegistrarCitas() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtHoraRegistrarCita, datePickerFechaRegistrarCita));
+    }
+
+    @FXML
+    private void onActionRegistrarCita(ActionEvent event) {
+
+        try {
+            String invalidos = validarRequeridos();
+
+            if (!invalidos.isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar cita", getStage(), invalidos);
+            } else {
+                CitasService citaService = new CitasService();
+                Respuesta respuesta = citaService.guardarCita(cita);
+
+                if (!respuesta.getEstado()) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar cita", getStage(), respuesta.getMensaje());
+                } else {
+                    unbindCita();
+                    cita = (CitasDto) respuesta.getResultado("Citas");
+
+                    bindCita(false);
+
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar cita", getStage(), "Cita guardada correctamente.");
+
+                }
+            }
+        } catch (Exception ex) {
+
+            Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error guardando el paciente.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar paciente", getStage(), "Ocurrio un error guardando el paciente.");
+        }
+
+    }
     
-    
-    
-    
+     
+
 }

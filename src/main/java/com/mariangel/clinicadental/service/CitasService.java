@@ -51,11 +51,11 @@ public class CitasService {
             et = em.getTransaction();
             et.begin();
             Citas cita;
-            if (citasDto.getCitaId() != null && citasDto.getCitaId()> 0) {
-                cita = em.find(Citas.class, citasDto.getCitaId());
+            if (citasDto.getCitaId() != null && citasDto.getCitaId() > 0) {
+                cita = em.find(Citas.class, citasDto.getCitaCedupac());
                 if (cita == null) {
                     et.rollback();
-                    return new Respuesta(false, "No se encrontró la cita a modificar.", "guardarCita NoResultException");
+                    return new Respuesta(false, "No se encrontró el empleado a modificar.", "guardarEmpleado NoResultException");
                 }
                 cita.actualizar(citasDto);
                 cita = em.merge(cita);
@@ -64,14 +64,16 @@ public class CitasService {
                 em.persist(cita);
             }
             et.commit();
-            return new Respuesta(true, "", "", "Empleado", new CitasDto(cita));
+            return new Respuesta(true, "", "", "Citas", new CitasDto(cita));
         } catch (Exception ex) {
             et.rollback();
-            Logger.getLogger(CitasService.class.getName()).log(Level.SEVERE, "Ocurrió un error al guardar la cita.", ex);
-            return new Respuesta(false, "Ocurrio un error al guardar la cita.", "guardarCita " + ex.getMessage());
+            Logger.getLogger(PacientesService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el cita.", ex);
+            return new Respuesta(false, "Ocurrio un error al guardar el cita.", "guardar cita " + ex.getMessage());
         }
     }
-
+    
+    
+    
     public Respuesta eliminarCita(Long id) {
         try {
             et = em.getTransaction();
