@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -147,17 +148,9 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtCedulaPaciente.setTextFormatter(Formato.getInstance().integerFormat());
-        txtDireccionPaciente.setTextFormatter(Formato.getInstance().letrasFormat(150));
-        txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
-        //  txtHoraRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
         paciente = new PacientesDto();
-        nuevoPaciente();
-        indicarRequeridos();
-        indicarRequeridosCitas();
+        
+       
            
     }
 
@@ -181,8 +174,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtPrimerApellidoPaciente.textProperty().bindBidirectional(paciente.pacPapellido);
         txtSegundoApellidoPaciente.textProperty().bindBidirectional(paciente.pacSapellido);
         txtDireccionPaciente.textProperty().bindBidirectional(paciente.pacDirec);
-        // txtHoraRegistrarCita.textProperty().bindBidirectional(cita.citaHora);
-        // datePickerFechaRegistrarCita.valueProperty().bindBidirectional(cita.citaDia);
         datePickerFecNacPaciente.valueProperty().bindBidirectional(paciente.pacFecnac);
     }
 
@@ -193,8 +184,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtPrimerApellidoPaciente.textProperty().unbindBidirectional(paciente.pacPapellido);
         txtSegundoApellidoPaciente.textProperty().unbindBidirectional(paciente.pacSapellido);
         txtDireccionPaciente.textProperty().bindBidirectional(paciente.pacDirec);
-//        datePickerFechaRegistrarCita.valueProperty().unbindBidirectional(cita.citaDia);
-        //    txtHoraRegistrarCita.textProperty().bindBidirectional(cita.citaHora);
         datePickerFecNacPaciente.valueProperty().unbindBidirectional(paciente.pacFecnac);
     }
 
@@ -414,6 +403,35 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtHoraRegistrarCita.clear();
         txtCedulaRegistrarCita.clear();
     }
+
+    @FXML
+    private void onSelectionTapRegistrarPacientes(Event event) {
+        
+        txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtCedulaPaciente.setTextFormatter(Formato.getInstance().integerFormat());
+        txtDireccionPaciente.setTextFormatter(Formato.getInstance().letrasFormat(150));
+        indicarRequeridos();
+        nuevoPaciente();
+    }
+
+    @FXML
+    private void onSelectionTapRegistrarCita(Event event) {
+        
+         txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
+         indicarRequeridosCitas();
+    }
+
+    @FXML
+    private void onSelectionTapInformacionPacientes(Event event) {
+        
+    }
+    
+    
+    
+    
+    
     
     
     
