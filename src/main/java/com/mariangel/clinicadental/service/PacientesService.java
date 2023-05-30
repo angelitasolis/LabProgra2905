@@ -28,15 +28,18 @@ public class PacientesService {
 
 
     public Respuesta guardarPaciente(PacientesDto pacientesDto) {
+        
+       
         try {
             et = em.getTransaction();
             et.begin();
             Pacientes paciente;
-            if (pacientesDto.getPacCedula() == null && pacientesDto.getPacCedula() > 0) {
+            if (pacientesDto.getPacCedula() == null ) {
                 paciente = em.find(Pacientes.class, pacientesDto.getPacCedula());
-                System.out.println(paciente.getPacDirec());
+                System.out.println(paciente.getPacDirec()+" try primer if METODO Guardar paciente");
                 if (paciente == null) {
                     et.rollback();
+                       System.out.println(paciente.getPacDirec()+" try segundo if METODO Guardar paciente");
                     return new Respuesta(false, "No se encrontró el paciente a modificar.", "guardarPaciente NoResultException");
                 }
                 paciente.actualizar(pacientesDto);
@@ -57,7 +60,7 @@ public class PacientesService {
     public Respuesta getPaciente(Long ced) {
         try {
             System.out.println(ced);
-            System.out.println("ENTRA EN EL GET PACIENTE");
+            System.out.println("ENTRA EN EL GET PACIENTE del service que es llamado en cargar paciente" + ced);
             Query qryPacientes = em.createNamedQuery("Pacientes.findByPkPacCedula", Pacientes.class);
             qryPacientes.setParameter("pkPacCedula", ced);
 
@@ -111,7 +114,7 @@ public class PacientesService {
             et = em.getTransaction();
             et.begin();
             Pacientes pacientes;
-            if (ced != null && ced > 0) {
+            if (ced != null) {
                 pacientes = em.find(Pacientes.class, ced);
                 if (pacientes == null) {
                     et.rollback();

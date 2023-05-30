@@ -136,7 +136,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
      */
     PacientesDto paciente;
     CitasDto cita;
-    
+
     List<Node> requeridos = new ArrayList<>();
     @FXML
     private Button btnModificarPaciente;
@@ -147,21 +147,18 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-
         paciente = new PacientesDto();
         cita = new CitasDto();
-
-    }
-
-    public void indicarRequeridos() {
-        requeridos.clear();
-        requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
-    }
-
-    public void indicarRequeridosCitas() {
-        requeridos.clear();
-        requeridos.addAll(Arrays.asList(txtNombreRegistrarCita, txtPrimerApellidoRegistrarCita, txtSegundoApellidoRegistrarCita));
+        txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
+        txtCedulaPaciente.setTextFormatter(Formato.getInstance().integerFormat());
+        txtDireccionPaciente.setTextFormatter(Formato.getInstance().letrasFormat(150));
+        txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
+        nuevoCita();
+        indicarRequeridosCitas();
+        indicarRequeridos();
+        nuevoPaciente();
     }
 
     private void bindPaciente(Boolean nuevo) {
@@ -174,19 +171,27 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtSegundoApellidoPaciente.textProperty().bindBidirectional(paciente.pacSapellido);
         txtDireccionPaciente.textProperty().bindBidirectional(paciente.pacDirec);
         datePickerFecNacPaciente.valueProperty().bindBidirectional(paciente.pacFecnac);
+       
     }
 
     private void unbindPaciente() {
-
+        System.out.println(" ENTRO AL unBIND de cargar paciente");
         txtCedulaPaciente.textProperty().unbindBidirectional(paciente.pacCedula);
         txtNombrePaciente.textProperty().unbindBidirectional(paciente.pacNombre);
         txtPrimerApellidoPaciente.textProperty().unbindBidirectional(paciente.pacPapellido);
         txtSegundoApellidoPaciente.textProperty().unbindBidirectional(paciente.pacSapellido);
-        txtDireccionPaciente.textProperty().bindBidirectional(paciente.pacDirec);
+        txtDireccionPaciente.textProperty().unbindBidirectional(paciente.pacDirec);
         datePickerFecNacPaciente.valueProperty().unbindBidirectional(paciente.pacFecnac);
     }
 
+    public void indicarRequeridos() {
+            System.out.println(" ENTRO AL indicar requeridos de cargar paciente");
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
+    }
+
     private void nuevoPaciente() {
+        System.out.println(" ENTRO AL Nuevo paciente  de cargar paciente");
         unbindPaciente();
         paciente = new PacientesDto();
         bindPaciente(true);
@@ -197,70 +202,31 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private void cargarPaciente(Long pcedula) {
         PacientesService service = new PacientesService();
         Respuesta respuesta = service.getPaciente(pcedula);
-        System.out.println("Paciente antes del unbind" + pcedula);
+        System.out.println("METODO CARGAR Paciente antes del unbind" + pcedula);
         if (respuesta.getEstado()) {
             unbindPaciente();
             System.out.println("despues del unbind");
             paciente = (PacientesDto) respuesta.getResultado("Pacientes");
 
             bindPaciente(false);
-            System.out.println("Paciente despues del bind" + pcedula);
+            System.out.println("METODO CARGAR PACIENTE Paciente despues del bind" + pcedula);
             validarRequeridos();
+            System.out.println("valida requeridos" + pcedula);
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
         }
 
     }
 
-    public String validarRequeridos() {
-        Boolean validos = true;
-        String invalidos = "";
-        for (Node node : requeridos) {
-            if (node instanceof JFXTextField && !((JFXTextField) node).validate()) {
-                if (validos) {
-                    invalidos += ((JFXTextField) node).getPromptText();
-                } else {
-                    invalidos += "," + ((JFXTextField) node).getPromptText();
-                }
-                validos = false;
-            } else if (node instanceof JFXPasswordField && !((JFXPasswordField) node).validate()) {
-                if (validos) {
-                    invalidos += ((JFXPasswordField) node).getPromptText();
-                } else {
-                    invalidos += "," + ((JFXPasswordField) node).getPromptText();
-                }
-                validos = false;
-            } else if (node instanceof JFXDatePicker && ((JFXDatePicker) node).getValue() == null) {
-                if (validos) {
-                    invalidos += ((JFXDatePicker) node).getAccessibleText();
-                } else {
-                    invalidos += "," + ((JFXDatePicker) node).getAccessibleText();
-                }
-                validos = false;
-            } else if (node instanceof JFXComboBox && ((JFXComboBox) node).getSelectionModel().getSelectedIndex() < 0) {
-                if (validos) {
-                    invalidos += ((JFXComboBox) node).getPromptText();
-                } else {
-                    invalidos += "," + ((JFXComboBox) node).getPromptText();
-                }
-                validos = false;
-            }
-        }
-        if (validos) {
-            return "";
-        } else {
-            return "Campos requeridos o con problemas de formato [" + invalidos + "].";
-        }
-    }
-
-    @Override
-    public void initialize() {
-
+    @FXML
+    private void onActionBuscarPaciente(ActionEvent event) {
+        String cedulaText = txtCedulaPaciente.getText();
+        Long cedula = Long.parseLong(cedulaText);
+        cargarPaciente(cedula);
     }
 
     @FXML
     private void onAnctionGuardarPaciente(ActionEvent event) {
-        System.out.println("Hola");
         try {
             String invalidos = validarRequeridos();
 
@@ -339,23 +305,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         }
     }
 
-    @FXML
-    private void onActionBuscarPaciente(ActionEvent event) {
-        String cedulaText = txtCedulaPaciente.getText();
-        Long cedula = Long.parseLong(cedulaText);
-        cargarPaciente(cedula);
-    }
-
-    @FXML
-    private void onActionBtnCancelar(ActionEvent event) {
-        txtCedulaPaciente.clear();
-        txtDireccionPaciente.clear();
-        txtNombrePaciente.clear();
-        txtPrimerApellidoPaciente.clear();
-        txtSegundoApellidoPaciente.clear();
-        datePickerFecNacPaciente.setValue(null);
-    }
-
+    //citas
     @FXML
     private void onActionBuscarCitas(ActionEvent event) {
         if (!txtCedulaRegistrarCita.getText().isBlank()) {
@@ -363,6 +313,11 @@ public class PantallaPrincipalViewController extends Controller implements Initi
             Long cedula = Long.parseLong(cedulaText);
             cargarCedulaCita(cedula);
         }
+    }
+
+    public void indicarRequeridosCitas() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtNombreRegistrarCita, txtPrimerApellidoRegistrarCita, txtSegundoApellidoRegistrarCita));
     }
 
     private void bindCitas(Boolean nuevo) {
@@ -396,49 +351,13 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     }
 
-    @FXML
-    private void onActionCancelarRegistrarCita(ActionEvent event) {
-        datePickerFechaRegistrarCita.setValue(null);
-        txtHoraRegistrarCita.clear();
-        txtCedulaRegistrarCita.clear();
-    }
-//TapPanes
-
-    @FXML
-    private void onSelectionTapRegistrarPacientes(Event event) {
-
-        txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
-        txtCedulaPaciente.setTextFormatter(Formato.getInstance().integerFormat());
-        txtDireccionPaciente.setTextFormatter(Formato.getInstance().letrasFormat(150));
-        indicarRequeridos();
-        nuevoPaciente();
-    }
-
-    @FXML
-    private void onSelectionTapRegistrarCita(Event event) {
-
-        txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
-        nuevoCita();
-        indicarRequeridosCitas();
-    }
-
-    @FXML
-    private void onSelectionTapInformacionPacientes(Event event) {
-
-    }
-    
-    
-    
 //Registrar Citas
-    
-      private void nuevoCita() {
+    private void nuevoCita() {
         unbindCita();
         cita = new CitasDto();
         bindCita(true);
     }
-      
+
     private void bindCita(Boolean nuevo) {
         txtHoraRegistrarCita.textProperty().bindBidirectional(cita.citaHora);
         datePickerFechaRegistrarCita.valueProperty().bindBidirectional(cita.citaDia);
@@ -449,6 +368,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtHoraRegistrarCita.textProperty().unbindBidirectional(cita.citaHora);
         datePickerFechaRegistrarCita.valueProperty().unbindBidirectional(cita.citaDia);
     }
+
     public void indicarRequeridosRegistrarCitas() {
         requeridos.clear();
         requeridos.addAll(Arrays.asList(txtHoraRegistrarCita, datePickerFechaRegistrarCita));
@@ -485,7 +405,86 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         }
 
     }
-    
-     
 
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof JFXTextField && !((JFXTextField) node).validate()) {
+                if (validos) {
+                    invalidos += ((JFXTextField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXTextField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXPasswordField && !((JFXPasswordField) node).validate()) {
+                if (validos) {
+                    invalidos += ((JFXPasswordField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXPasswordField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof JFXDatePicker && ((JFXDatePicker) node).getValue() == null) {
+                if (validos) {
+                    invalidos += ((JFXDatePicker) node).getAccessibleText();
+                } else {
+                    invalidos += "," + ((JFXDatePicker) node).getAccessibleText();
+                }
+                validos = false;
+            } else if (node instanceof JFXComboBox && ((JFXComboBox) node).getSelectionModel().getSelectedIndex() < 0) {
+                if (validos) {
+                    invalidos += ((JFXComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return "";
+        } else {
+            return "Campos requeridos o con problemas de formato [" + invalidos + "].";
+        }
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    //limpiar
+    @FXML
+    private void onActionCancelarRegistrarCita(ActionEvent event) {
+        datePickerFechaRegistrarCita.setValue(null);
+        txtHoraRegistrarCita.clear();
+        txtCedulaRegistrarCita.clear();
+    }
+
+    @FXML
+    private void onActionBtnCancelar(ActionEvent event) {
+        txtCedulaPaciente.clear();
+        txtDireccionPaciente.clear();
+        txtNombrePaciente.clear();
+        txtPrimerApellidoPaciente.clear();
+        txtSegundoApellidoPaciente.clear();
+        datePickerFecNacPaciente.setValue(null);
+    }
+
+//TapPanes
+    @FXML
+    private void onSelectionTapRegistrarPacientes(Event event) {
+
+        
+    }
+
+    @FXML
+    private void onSelectionTapRegistrarCita(Event event) {
+
+        
+    }
+
+    @FXML
+    private void onSelectionTapInformacionPacientes(Event event) {
+
+    }
 }
