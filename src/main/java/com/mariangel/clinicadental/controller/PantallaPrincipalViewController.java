@@ -4,7 +4,9 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.mariangel.clinicadental.model.CitasDto;
 import com.mariangel.clinicadental.model.PacientesDto;
+import com.mariangel.clinicadental.service.CitasService;
 import com.mariangel.clinicadental.service.PacientesService;
 import com.mariangel.clinicadental.util.Formato;
 import com.mariangel.clinicadental.util.Mensaje;
@@ -123,8 +125,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     @FXML
     private Label txtPrimerApellidoRegistrarCita;
     @FXML
-    private TextField txtId;
-    @FXML
     private TextField txtSegundoApellidoPaciente;
 
     @FXML
@@ -133,13 +133,15 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     /**
      * Initializes the controller class.
      */
-    // CitasDto cita;
+    CitasDto cita;
     PacientesDto paciente;
     List<Node> requeridos = new ArrayList<>();
     @FXML
     private Button btnModificarPaciente;
     @FXML
     private TableView<?> tblvInformacionPacientes;
+    @FXML
+    private Button btnCancelarRegistrarCita;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -150,17 +152,26 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtCedulaPaciente.setTextFormatter(Formato.getInstance().integerFormat());
         txtDireccionPaciente.setTextFormatter(Formato.getInstance().letrasFormat(150));
+        txtCedulaRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
         //  txtHoraRegistrarCita.setTextFormatter(Formato.getInstance().integerFormat());
         paciente = new PacientesDto();
         nuevoPaciente();
         indicarRequeridos();
+        indicarRequeridosCitas();
+           
     }
 
     public void indicarRequeridos() {
         requeridos.clear();
         requeridos.addAll(Arrays.asList(txtNombrePaciente, txtPrimerApellidoPaciente, txtSegundoApellidoPaciente, txtCedulaPaciente, txtDireccionPaciente, txtHoraRegistrarCita, datePickerFecNacPaciente));
     }
-
+    
+    public void indicarRequeridosCitas(){
+    requeridos.clear();
+    requeridos.addAll(Arrays.asList(txtNombreRegistrarCita,txtPrimerApellidoRegistrarCita , txtSegundoApellidoRegistrarCita));
+    }
+    
+    
     private void bindPaciente(Boolean nuevo) {
         if (!nuevo) {
             txtCedulaPaciente.textProperty().bindBidirectional(paciente.pacCedula);
@@ -195,18 +206,17 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         txtCedulaPaciente.requestFocus();
     }
 
-
     private void cargarPaciente(Long pcedula) {
         PacientesService service = new PacientesService();
         Respuesta respuesta = service.getPaciente(pcedula);
-        System.out.println("Paciente antes del unbind" +pcedula);
+        System.out.println("Paciente antes del unbind" + pcedula);
         if (respuesta.getEstado()) {
             unbindPaciente();
-            System.out.println("despues del unbind" );
+            System.out.println("despues del unbind");
             paciente = (PacientesDto) respuesta.getResultado("Pacientes");
-            
+
             bindPaciente(false);
-            System.out.println("Paciente despues del bind" +pcedula);
+            System.out.println("Paciente despues del bind" + pcedula);
             validarRequeridos();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
@@ -310,7 +320,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
             PacientesService pacientesService = new PacientesService();
             Respuesta respuesta = pacientesService.modificarPaciente(pacientesDto, cedula);
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Actualizar paciente", getStage(), "Paciente actualizado correctamente.");
-            
+
         } catch (Exception ex) {
             Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error actualizando el Paciente.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Actualizar Paciente", getStage(), "Ocurrio un error al actualizar el Paciente.");
@@ -332,7 +342,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
                 } else {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Paciente", getStage(), "Paciente eliminado correctamente.");
                     nuevoPaciente();
-                    
+
                 }
             }
         } catch (Exception ex) {
@@ -351,13 +361,60 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     @FXML
     private void onActionBtnCancelar(ActionEvent event) {
         txtCedulaPaciente.clear();
-        txtCedulaRegistrarCita.clear();
         txtDireccionPaciente.clear();
         txtNombrePaciente.clear();
         txtPrimerApellidoPaciente.clear();
         txtSegundoApellidoPaciente.clear();
         datePickerFecNacPaciente.setValue(null);
     }
-    
 
+    @FXML
+    private void onActionBuscarCitas(ActionEvent event) {
+        if(!txtCedulaRegistrarCita.getText().isBlank()){ 
+        String cedulaText = txtCedulaRegistrarCita.getText();
+        Long cedula = Long.parseLong(cedulaText);
+        cargarCedulaCita(cedula);
+        }
+    } 
+    
+    
+    private void bindCitas(Boolean nuevo) {
+        
+       txtNombreRegistrarCita.textProperty().bindBidirectional(paciente.pacNombre);
+       txtPrimerApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacPapellido);
+       txtSegundoApellidoRegistrarCita.textProperty().bindBidirectional(paciente.pacSapellido);
+    }
+
+    private void unbindCitas() {
+        txtNombreRegistrarCita.textProperty().unbindBidirectional(paciente.pacNombre);
+        txtPrimerApellidoRegistrarCita.textProperty().unbindBidirectional(paciente.pacPapellido);
+        txtSegundoApellidoRegistrarCita.textProperty().unbindBidirectional(paciente.pacSapellido);
+
+    }
+    
+    private void cargarCedulaCita(Long pcedula) {
+        PacientesService service = new PacientesService();
+        Respuesta respuesta = service.getPaciente(pcedula);
+        
+        if (respuesta.getEstado()) {
+            unbindCitas();
+            paciente = (PacientesDto) respuesta.getResultado("Pacientes");
+
+            bindCitas(false);
+            validarRequeridos();
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar paciente", getStage(), respuesta.getMensaje());
+        }
+
+    }
+
+    @FXML
+    private void onActionCancelarRegistrarCita(ActionEvent event) {
+        datePickerFechaRegistrarCita.setValue(null);
+        txtHoraRegistrarCita.clear();
+        txtCedulaRegistrarCita.clear();
+    }
+    
+    
+    
 }
