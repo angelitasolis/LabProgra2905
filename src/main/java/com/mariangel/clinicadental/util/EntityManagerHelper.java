@@ -11,7 +11,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author ccarranza
+ * @author Mari
  */
 public class EntityManagerHelper {
 
@@ -34,10 +34,10 @@ public class EntityManagerHelper {
     }
 
     public static EntityManager getManager() {
-        if (em == null) {
-            emf = Persistence.createEntityManagerFactory("com.mariangel_LaboratorioIIIClinicaDental_PU");
-            em = emf.createEntityManager();
-        }
-        return em;
+          if (em == null || !em.isOpen()) {
+        emf = Persistence.createEntityManagerFactory("com.mariangel_LaboratorioIIIClinicaDental_PU");
+        em = emf.createEntityManager();
+    }
+    return em;
     }
 }

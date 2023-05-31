@@ -7,15 +7,20 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.mariangel.clinicadental.model.CitasDto;
+import com.mariangel.clinicadental.model.Pacientes;
 import com.mariangel.clinicadental.model.PacientesDto;
 import com.mariangel.clinicadental.service.CitasService;
 import com.mariangel.clinicadental.service.PacientesService;
+import com.mariangel.clinicadental.util.EntityManagerHelper;
 import com.mariangel.clinicadental.util.Formato;
 import com.mariangel.clinicadental.util.Mensaje;
 import com.mariangel.clinicadental.util.Respuesta;
 import java.awt.Desktop.Action;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -39,7 +45,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javafx.collections.FXCollections;
 
 /**
  * FXML Controller class
@@ -91,9 +101,6 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private TableColumn<PacientesDto, Long> tblvEdadInfoPacientes;
 
     @FXML
-    private TableColumn<PacientesDto, String> tblvFechaInfoPacientes;
-
-    @FXML
     private TableColumn<?, ?> tblvFechaRegistrarCita;
 
     @FXML
@@ -108,7 +115,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     @FXML
     private TableColumn<?, ?> tblvSegundoApellidoInfoPacientes;
     @FXML
-    private TableView<?> tblvInformacionPacientes;
+    private TableView<Pacientes> tblvInformacionPacientes;
     @FXML
     private TableView<?> tblvRegistrarCita;
     @FXML
@@ -154,6 +161,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private Button btnCancelarRegistrarCita;
     @FXML
     private Label labelAdministracionClinicaDental;
+
     Media sound = new Media(getClass().getResource("/com/mariangel/laboratorioiiiclinicadental/musica/agregadocita.wav").toExternalForm());
     MediaPlayer mediaPlayer = new MediaPlayer(sound);
 
@@ -189,7 +197,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     }
 
     private void unbindPaciente() {
-        System.out.println(" ENTRO AL unBIND de cargar paciente");
+
         txtCedulaPaciente.textProperty().unbindBidirectional(paciente.pacCedula);
         txtNombrePaciente.textProperty().unbindBidirectional(paciente.pacNombre);
         txtPrimerApellidoPaciente.textProperty().unbindBidirectional(paciente.pacPapellido);
@@ -424,6 +432,26 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     }
 
+    public static List<Pacientes> obtenerPacientesBD() {
+        EntityManager em = EntityManagerHelper.getManager();
+        List<Pacientes> pacientesList = new ArrayList<>();
+        try {
+            pacientesList = em.createQuery("SELECT p FROM Pacientes p", Pacientes.class).getResultList();
+            for (Pacientes paciente : pacientesList) {
+                LocalDate now = LocalDate.now();
+                LocalDate fechaNacimiento = paciente.getPacFecnac().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int edad = Period.between(fechaNacimiento, now).getYears();
+                paciente.setEdad(edad);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al obtener todos los pacientes de la base de datos");
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return pacientesList;
+    }
+
     public String validarRequeridos() {
         Boolean validos = true;
         String invalidos = "";
@@ -505,6 +533,19 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @FXML
     private void onSelectionTapInformacionPacientes(Event event) {
+        if (tapPaneInfoPacientes.isSelected()) {
+            tblvNombreInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("pacNombre"));
+            tblvCedulaInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("pkPacCedula"));
+            tblvEdadInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("edad"));
+            tblvDireccionInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("pacDirec"));
+            tblvPrimerApellidoInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("pacPapellido"));
+            tblvSegundoApellidoInfoPacientes.setCellValueFactory(new PropertyValueFactory<>("pacSapellido"));
 
+            List<Pacientes> list = obtenerPacientesBD();
+            ObservableList<Pacientes> observableList = FXCollections.observableArrayList(list);
+
+            // Asigna los nuevos datos a la TableView
+            tblvInformacionPacientes.setItems(observableList);
+        }
     }
 }

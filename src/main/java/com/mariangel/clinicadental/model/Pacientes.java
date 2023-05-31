@@ -22,6 +22,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -60,7 +61,9 @@ public class Pacientes implements Serializable {
     private Date pacFecnac;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "citaCedupac")
     private Collection<Citas> citasCollection;
-
+    @Transient
+    private int edad;
+    
     public Pacientes() {
     }
 
@@ -123,7 +126,13 @@ public class Pacientes implements Serializable {
     public void setCitasCollection(Collection<Citas> citasCollection) {
         this.citasCollection = citasCollection;
     }
+    public int getEdad() {
+        return edad;
+    }
 
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
     @Override
     public int hashCode() {
         int hash = 0;

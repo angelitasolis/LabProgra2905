@@ -88,10 +88,8 @@
                                         <TableColumn fx:id="tblvNombreInfoPacientes" prefWidth="97.0" text="NOMBRE" />
                               <TableColumn fx:id="tblvPrimerApellidoInfoPacientes" prefWidth="171.0" text="PRIMER APELLIDO" />
                                         <TableColumn fx:id="tblvSegundoApellidoInfoPacientes" prefWidth="171.0" text="SEGUNDO APELLIDO" />
-                                        <TableColumn fx:id="tblvEdadInfoPacientes" prefWidth="64.79998779296875" text="EDAD" />
-                                        <TableColumn fx:id="tblvDireccionInfoPacientes" prefWidth="221.60003662109375" text="DIRECCIÓN" />
-                              <TableColumn fx:id="tblvFechaInfoPacientes" prefWidth="162.4000244140625" text="FECHA" />
-                              <TableColumn prefWidth="71.0" text="HORA" />
+                                        <TableColumn fx:id="tblvEdadInfoPacientes" prefWidth="94.39996337890625" text="EDAD" />
+                                        <TableColumn fx:id="tblvDireccionInfoPacientes" prefWidth="332.00006103515625" text="DIRECCIÓN" />
                                     </columns>
                                 </TableView>
                             </children>
