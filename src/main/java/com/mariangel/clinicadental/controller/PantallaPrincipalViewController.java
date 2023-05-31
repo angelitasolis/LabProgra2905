@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.mariangel.clinicadental.model.Citas;
 import com.mariangel.clinicadental.model.CitasDto;
 import com.mariangel.clinicadental.model.Pacientes;
 import com.mariangel.clinicadental.model.PacientesDto;
@@ -23,6 +24,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -101,23 +103,23 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private TableColumn<PacientesDto, Long> tblvEdadInfoPacientes;
 
     @FXML
-    private TableColumn<?, ?> tblvFechaRegistrarCita;
+    private TableColumn<PacientesDto, String> tblvNombreInfoPacientes;
 
     @FXML
-    private TableColumn<?, ?> tblvHoraRegistrarCita;
+    private TableColumn<PacientesDto, String> tblvPrimerApellidoInfoPacientes;
 
     @FXML
-    private TableColumn<?, ?> tblvNombreInfoPacientes;
-
-    @FXML
-    private TableColumn<?, ?> tblvPrimerApellidoInfoPacientes;
-
-    @FXML
-    private TableColumn<?, ?> tblvSegundoApellidoInfoPacientes;
+    private TableColumn<PacientesDto, String> tblvSegundoApellidoInfoPacientes;
     @FXML
     private TableView<Pacientes> tblvInformacionPacientes;
+    
     @FXML
-    private TableView<?> tblvRegistrarCita;
+    private TableView<Citas> tblvRegistrarCita;
+    @FXML
+    private TableColumn<CitasDto, Date> tblvFechaRegistrarCita;
+
+    @FXML
+    private TableColumn<CitasDto,String> tblvHoraRegistrarCita;  
     @FXML
     private TextField txtCedulaPaciente;
 
@@ -168,8 +170,8 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         paciente = new PacientesDto();
-
         cita = new CitasDto();
+        
         txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtSegundoApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
@@ -451,7 +453,23 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         }
         return pacientesList;
     }
-
+    
+   public static List<Citas> obtenerCitasBD() {
+        EntityManager em = EntityManagerHelper.getManager();
+        List<Citas> citasList = new ArrayList<>();
+        try {
+            citasList = em.createQuery("SELECT c FROM Citas c", Citas.class).getResultList();
+        } catch (Exception e) {
+            System.out.println("Error al obtener las citas de la base de datos");
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+        return citasList;
+    }
+   
+   
+   
     public String validarRequeridos() {
         Boolean validos = true;
         String invalidos = "";
@@ -528,7 +546,16 @@ public class PantallaPrincipalViewController extends Controller implements Initi
 
     @FXML
     private void onSelectionTapRegistrarCita(Event event) {
+   if (tapPaneRegistarCita.isSelected()) {
+            tblvHoraRegistrarCita.setCellValueFactory(new PropertyValueFactory<>("citaHora"));
+            tblvFechaRegistrarCita.setCellValueFactory(new PropertyValueFactory<>("citaDia"));
+           
 
+            List<Citas> list = obtenerCitasBD();
+            ObservableList<Citas> observableList = FXCollections.observableArrayList(list);
+
+            // Asigna los nuevos datos a la TableView
+          tblvRegistrarCita.setItems(observableList);}
     }
 
     @FXML

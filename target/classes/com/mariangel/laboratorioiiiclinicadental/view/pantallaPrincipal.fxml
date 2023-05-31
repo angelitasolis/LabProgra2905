@@ -58,7 +58,7 @@
                                 <TextField fx:id="txtCedulaRegistrarCita" layoutX="118.0" layoutY="32.0" prefHeight="30.0" prefWidth="183.0" promptText="Escriba una cédula" AnchorPane.leftAnchor="118.0" AnchorPane.rightAnchor="649.0" />
                                 <Button fx:id="btnBuscarRegistrarCita" layoutX="334.0" layoutY="27.0" mnemonicParsing="false" onAction="#onActionBuscarCitas" text="BUSCAR" AnchorPane.leftAnchor="334.0" AnchorPane.topAnchor="27.0" />
                                 <Label layoutX="53.0" layoutY="357.0" text="FECHA" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="357.0" />
-                                <DatePicker fx:id="datePickerFechaRegistrarCita" layoutX="146.0" layoutY="349.0" AnchorPane.rightAnchor="629.2" />
+                                <DatePicker fx:id="datePickerFechaRegistrarCita" layoutX="146.0" layoutY="349.0" promptText="Seleccione una fecha" AnchorPane.rightAnchor="629.2" />
                                 <Label layoutX="56.0" layoutY="425.0" text="HORA" AnchorPane.leftAnchor="56.0" AnchorPane.topAnchor="425.0" />
                                 <TextField fx:id="txtHoraRegistrarCita" layoutX="146.0" layoutY="418.0" prefHeight="25.0" prefWidth="174.0" promptText="Hora de la cita" AnchorPane.rightAnchor="630.0" />
                                 <Label fx:id="txtNombreRegistrarCita" layoutX="297.0" layoutY="113.0" />
@@ -66,11 +66,10 @@
                                 <Label fx:id="txtSegundoApellidoRegistrarCita" layoutX="297.0" layoutY="210.0" />
                                 <Label layoutX="136.0" layoutY="300.0" text="REGISTRAR CITA" AnchorPane.topAnchor="300.0" />
                                 <Button fx:id="btnRegistrar" layoutX="260.0" layoutY="476.0" mnemonicParsing="false" onAction="#onActionRegistrarCita" text="REGISTRAR" />
-                                <TableView fx:id="tblvRegistrarCita" layoutX="573.0" layoutY="190.0" prefHeight="235.0" prefWidth="382.0" AnchorPane.bottomAnchor="214.00000000000006" AnchorPane.leftAnchor="573.0" AnchorPane.rightAnchor="69.0">
+                                <TableView fx:id="tblvRegistrarCita" layoutX="573.0" layoutY="190.0" prefHeight="235.0" prefWidth="317.0" AnchorPane.bottomAnchor="214.0" AnchorPane.leftAnchor="573.0" AnchorPane.rightAnchor="60.0">
                                     <columns>
                                         <TableColumn fx:id="tblvHoraRegistrarCita" prefWidth="141.60000610351562" text="Hora" />
                                         <TableColumn fx:id="tblvFechaRegistrarCita" minWidth="0.0" prefWidth="175.19998168945312" text="Fecha" />
-                              <TableColumn prefWidth="64.0" text="HORA" />
                                     </columns>
                                 </TableView>
                         <Button fx:id="btnCancelarRegistrarCita" layoutX="102.0" layoutY="476.0" mnemonicParsing="false" onAction="#onActionCancelarRegistrarCita" text="CANCELAR" />
