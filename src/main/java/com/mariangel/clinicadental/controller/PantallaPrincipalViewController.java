@@ -1,5 +1,7 @@
 package com.mariangel.clinicadental.controller;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
@@ -152,14 +154,13 @@ public class PantallaPrincipalViewController extends Controller implements Initi
     private Button btnCancelarRegistrarCita;
     @FXML
     private Label labelAdministracionClinicaDental;
-    
-    
-    
-    
+    Media sound = new Media(getClass().getResource("/com/mariangel/laboratorioiiiclinicadental/musica/agregadocita.wav").toExternalForm());
+    MediaPlayer mediaPlayer = new MediaPlayer(sound);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         paciente = new PacientesDto();
+
         cita = new CitasDto();
         txtNombrePaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtPrimerApellidoPaciente.setTextFormatter(Formato.getInstance().letrasFormat(30));
@@ -235,6 +236,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
         String cedulaText = txtCedulaPaciente.getText();
         Long cedula = Long.parseLong(cedulaText);
         cargarPaciente(cedula);
+        mediaPlayer.play();
 
     }
 
@@ -259,7 +261,8 @@ public class PantallaPrincipalViewController extends Controller implements Initi
                     bindPaciente(false);
 
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar paciente", getStage(), "Paciente guardo con éxito.");
-
+                    //Sonido de agregado con éxito
+                    mediaPlayer.play();
                 }
             }
         } catch (Exception ex) {
@@ -287,7 +290,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
             PacientesService pacientesService = new PacientesService();
             Respuesta respuesta = pacientesService.modificarPaciente(pacientesDto, cedula);
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Actualizar paciente", getStage(), "Paciente actualizado correctamente.");
-
+            mediaPlayer.play();
         } catch (Exception ex) {
             Logger.getLogger(PantallaPrincipalViewController.class.getName()).log(Level.SEVERE, "Error actualizando el Paciente.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Actualizar Paciente", getStage(), "Ocurrio un error al actualizar el Paciente.");
@@ -309,7 +312,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
                 } else {
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Paciente", getStage(), "Paciente eliminado correctamente.");
                     nuevoPaciente();
-
+                    mediaPlayer.play();
                 }
             }
         } catch (Exception ex) {
@@ -325,6 +328,7 @@ public class PantallaPrincipalViewController extends Controller implements Initi
             String cedulaText = txtCedulaRegistrarCita.getText();
             Long cedula = Long.parseLong(cedulaText);
             cargarCedulaCita(cedula);
+            mediaPlayer.play();
         }
     }
 
@@ -408,7 +412,8 @@ public class PantallaPrincipalViewController extends Controller implements Initi
                     bindCita(false);
 
                     new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar cita", getStage(), "Cita guardada correctamente.");
-
+                    //sonido agregado correctamente
+                    mediaPlayer.play();
                 }
             }
         } catch (Exception ex) {

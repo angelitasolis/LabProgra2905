@@ -21,7 +21,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FlowController.getInstance().InitializeFlow(stage,null);
         stage.setTitle("Laboratorio III");
-        stage.getIcons().add(new Image("com/mariangel/laboratorioiiiclinicadental/imagenes/icono.png"));
+        stage.getIcons().add(new Image("/com/mariangel/laboratorioiiiclinicadental/imagenes/icono.png"));
        //FlowController.getInstance().goViewInWindow("LogInView");
        FlowController.getInstance().goMain();
        
